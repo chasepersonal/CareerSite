@@ -1,0 +1,30 @@
+
+<h1>{{resume.fields.resume_title}}</h1>
+<div class="card">
+    <div class="card-body">
+      <p class="card-text">{{resume.fields.introduction}}</p>
+      <p style="text-align: center"><button type="button" class="btn btn-primary" (click)="resumeToggle()">Show/Hide Resume</button></p>
+    </div>
+</div>
+<div *ngIf="showResume">
+  <div class="card">
+      <h4 class="card-title">{{resume.fields.first_job_title}}</h4>
+      <div class="card-body">
+        <p class="card-text" [innerHTML]="resume.fields.first_job_content"></p>
+      </div>
+  </div>
+  <div class="card">
+      <h4 class="card-title">{{resume.fields.second_job_title}}</h4>
+      <div class="card-body">
+        <p class="card-text" [innerHTML]="resume.fields.second_job_content"></p>
+      </div>
+  </div>
+</div>
+  <div class="card">
+    <h4 class="card-title">{{resume.fields.skills_title}}</h4>
+    <div class="card-body">
+    <p style="text-align: center"><button type="button" class="btn btn-primary" (click)="skillsToggle()">Show/Hide More Skills</button></p>
+    <p *ngIf="showSkills"class="card-text" [innerHTML]="resume.fields.skills_introduction"></p>
+    <p *ngIf="!showSkills" class="card-text" [innerHTML]="resume.fields.skills_dropdown_content"></p>
+    </div>
+  </div>

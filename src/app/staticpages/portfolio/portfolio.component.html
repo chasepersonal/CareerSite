@@ -1,0 +1,28 @@
+        <h1>{{portfolio.fields.title}}</h1>
+        <div class="card">
+          <div class="card-body">
+            <p class="card-text" [innerHTML]="portfolio.fields.main_content"></p>
+          </div>
+        </div>
+
+          <div class="card">
+            <h4 class="card-title">{{portfolio.fields.title_first_project}}</h4>
+            <div class="card-body">
+              <p class="card-text" [innerHTML]="portfolio.fields.first_project_content"></p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4 class="card-title">{{portfolio.fields.second_project_title}}</h4>
+            <div class="card-body">
+              <p class="card-text" [innerHTML]="portfolio.fields.second_project_content"></p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4 class="card-title">{{portfolio.fields.third_project_title}}</h4>
+            <div class="card-body">
+              <p class="card-text" [innerHTML]="portfolio.fields.third_project_content"></p>
+            </div>
+          </div>
+
