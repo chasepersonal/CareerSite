@@ -7,6 +7,9 @@
   }
 }
 
+.navbar {
+  border: 1px solid;
+}
 body {
   background-color: #F0F8FF;
   margin: 0;
@@ -77,4 +80,14 @@ h1 {
   content: "";
   clear: both;
   display: table;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  border: 1px solid;
+  background: white;
+  height: 30px;
 }
