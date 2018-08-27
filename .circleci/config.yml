@@ -23,7 +23,7 @@ jobs:
 
       - run:
           name: install-dependencies
-          command: npm install @6.2.0
+          command: npm install
 
       - save_cache:
           paths:
