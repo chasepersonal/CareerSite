@@ -10,6 +10,7 @@ export class PostsComponent implements OnInit {
 
   postPage: any;
   posts: any;
+  p: number = 1;
 
   constructor() { }
 

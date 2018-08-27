@@ -13,6 +13,7 @@ import { appRoutes } from './routes';
 import { PostsComponent } from './staticpages/posts/posts.component';
 import { ShareButtonsModule } from '@ngx-share/buttons';
 import { ShareButtonsOptions } from '@ngx-share/core';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 const customOptions: ShareButtonsOptions = {
   include: ['facebook','twitter','google','linkedin','pinterest','reddit','tumblr','whatsapp','messenger','telegram','sms'],
@@ -35,7 +36,8 @@ const customOptions: ShareButtonsOptions = {
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
     ShareButtonsModule.forRoot({options: customOptions}),
-    HttpClientJsonpModule
+    HttpClientJsonpModule,
+    NgxPaginationModule
   ],
   providers: [
   ],

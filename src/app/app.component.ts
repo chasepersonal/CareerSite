@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 })
 export class AppComponent implements OnInit {
 
+  showDropDown = true;
+
   constructor() {
 
   }
@@ -17,4 +19,7 @@ export class AppComponent implements OnInit {
 
   }
 
+  dropDownToggle() {
+    this.showDropDown = !this.showDropDown;
+  }
 }

@@ -39,6 +39,7 @@
     "fontawesome": "^4.7.2",
     "hoek": "^5.0.3",
     "jquery": "^3.3.1",
+    "ngx-pagination": "^3.2.0",
     "popper.js": "^1.14.3",
     "rxjs": "^6.0.0",
     "tunnel-agent": "^0.6.0",
