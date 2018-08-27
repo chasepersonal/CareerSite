@@ -6,12 +6,18 @@ import { ProfessionalComponent } from './staticpages/professional/professional.c
 import { WelcomeComponent } from './staticpages/welcome/welcome.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { RouterModule} from '@angular/router';
 import { appRoutes } from './routes';
 import { PostsComponent } from './staticpages/posts/posts.component';
+import { ShareButtonsModule } from '@ngx-share/buttons';
+import { ShareButtonsOptions } from '@ngx-share/core';
 
+const customOptions: ShareButtonsOptions = {
+  include: ['facebook','twitter','google','linkedin','pinterest','reddit','tumblr','whatsapp','messenger','telegram','sms'],
+  exclude: []
+}
 
 @NgModule({
   declarations: [
@@ -28,6 +34,8 @@ import { PostsComponent } from './staticpages/posts/posts.component';
     BrowserModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
+    ShareButtonsModule.forRoot({options: customOptions}),
+    HttpClientJsonpModule
   ],
   providers: [
   ],
