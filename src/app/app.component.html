@@ -31,12 +31,18 @@
         <div class="col-lg-3">
             <app-contact></app-contact>
         </div>
-        <div class="col-lg-9">
+        <div class="col-lg-8">
           <br>
           <router-outlet></router-outlet>
         </div>
+        <div class="col-lg-1">
+          <br>
+            <p><share-buttons [showCount]="true" [show]="5"></share-buttons></p>
+        </div>
     </div>
 </div>
+<br>
+<br>
 <footer class="footer">
   <div class="container">
   <p style="text-align: center">Page owned and operated by Chase Weyer</p>

@@ -11,9 +11,6 @@
         <div class="card-body">
           <h6 class="card-text">Published: {{post.published | date:'medium'}}</h6>
           <br>
-          <h6 class="card-text">Share Post:</h6>
-          <p><share-buttons [url]="post.url" [showCount]="true" [show]="5"></share-buttons></p>
-          <br>
           <p [innerHTML]="post.body"></p>
         </div>
     </div>
