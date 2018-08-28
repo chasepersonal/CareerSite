@@ -1,3 +1,4 @@
+import { ClickOutsideModule } from 'ng4-click-outside';
 import { ContactComponent } from './staticpages/contact/contact.component';
 import { AboutComponent } from './staticpages/about/about.component';
 import { NewoppComponent } from './staticpages/newopp/newopp.component';
@@ -37,7 +38,8 @@ const customOptions: ShareButtonsOptions = {
     RouterModule.forRoot(appRoutes),
     ShareButtonsModule.forRoot({options: customOptions}),
     HttpClientJsonpModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    ClickOutsideModule
   ],
   providers: [
   ],
