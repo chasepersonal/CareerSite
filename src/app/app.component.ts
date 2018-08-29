@@ -11,7 +11,8 @@ import { Observable } from 'rxjs';
 
 export class AppComponent implements OnInit {
 
-  state = true;
+
+  butterCMSUrl: string = 'https://buttercms.com'
 
   constructor() {
 
@@ -19,9 +20,5 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
 
-  }
-
-  toggleState() {
-    this.state = !this.state;
   }
 }
