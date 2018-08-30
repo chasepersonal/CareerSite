@@ -42,4 +42,5 @@ export class PortfolioComponent implements OnInit {
         /* Needs to specify all_projects collection in order to return necessary data */
         this.projects.all = res.data.data.all_projects;
     });
+  }
 }
