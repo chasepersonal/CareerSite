@@ -5,24 +5,13 @@
           </div>
         </div>
 
-          <div class="card">
-            <h4 class="card-title">{{portfolio.fields.title_first_project}}</h4>
+          <div class="card" *ngFor="let p of projects.all | paginate: { itemsPerPage: 3, currentPage: p }">
+            <h4 class="card-title">{{p.title}}</h4>
             <div class="card-body">
-              <p class="card-text" [innerHTML]="portfolio.fields.first_project_content"></p>
+              <p class="card-text" [innerHTML]="p.project_content"></p>
             </div>
           </div>
-
-          <div class="card">
-            <h4 class="card-title">{{portfolio.fields.second_project_title}}</h4>
-            <div class="card-body">
-              <p class="card-text" [innerHTML]="portfolio.fields.second_project_content"></p>
-            </div>
-          </div>
-
-          <div class="card">
-            <h4 class="card-title">{{portfolio.fields.third_project_title}}</h4>
-            <div class="card-body">
-              <p class="card-text" [innerHTML]="portfolio.fields.third_project_content"></p>
-            </div>
+          <div class="card pagination-spacing">
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
           </div>
 

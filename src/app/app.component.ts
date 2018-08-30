@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,8 +12,9 @@ import { Observable } from 'rxjs';
 
 export class AppComponent implements OnInit {
 
+  butterCMSUrl: string = 'https://buttercms.com';
 
-  butterCMSUrl: string = 'https://buttercms.com'
+  smallerWindow: boolean;
 
   constructor() {
 
