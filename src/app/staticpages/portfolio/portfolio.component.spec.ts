@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-
+import { NgxPaginationModule } from 'ngx-pagination';
 import { PortfolioComponent } from './portfolio.component';
 
 describe('PortfolioComponent', () => {
@@ -16,7 +16,8 @@ describe('PortfolioComponent', () => {
       declarations: [ PortfolioComponent ],
       imports: [
         HttpClientTestingModule,
-        RouterTestingModule
+        RouterTestingModule,
+        NgxPaginationModule
       ]
     })
     .compileComponents();

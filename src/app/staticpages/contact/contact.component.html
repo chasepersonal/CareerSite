@@ -3,14 +3,12 @@
       <img class="card-img-top" [src]="contact.fields.photo" />
       <h5 class="card-title">{{contact.fields.title}}</h5>
       <div class="card-body">
-          <p class="card-title">{{contact.fields.secondary_title}}</p>
         <p class="card-text" [innerHTML]="contact.fields.job_descriptions"></p>
         <p class="card-title">{{contact.fields.contact_title}}</p>
-        <p class="card-text">{{contact.fields.email}}</p>
-        <p class="card-title">{{contact.fields.social_title}}</p>
+        <p class="card-text">{{contact.fields.email}}
         <a [attr.href]="linkedInUrl" class="fa fa-linkedin"></a>
         <a [attr.href]="githubUrl" class="fa fa-github"></a>
-        <a [attr.href]="stackoverflowUrl" class="fa fa-stack-overflow"></a>
+        <a [attr.href]="stackoverflowUrl" class="fa fa-stack-overflow"></a></p>
       </div>
     </div>
 </div>

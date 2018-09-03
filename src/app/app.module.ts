@@ -15,6 +15,7 @@ import { ShareButtonsModule } from '@ngx-share/buttons';
 import { ShareButtonsOptions } from '@ngx-share/core';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NavComponent } from './staticpages/nav/nav.component';
+import { NgxPageScrollModule } from 'ngx-page-scroll';
 
 const customOptions: ShareButtonsOptions = {
   include: ['facebook','twitter','google','linkedin','pinterest','reddit','tumblr','whatsapp','messenger','telegram','sms'],
@@ -40,6 +41,7 @@ const customOptions: ShareButtonsOptions = {
     ShareButtonsModule.forRoot({options: customOptions}),
     HttpClientJsonpModule,
     NgxPaginationModule,
+    NgxPageScrollModule
   ],
   providers: [
   ],

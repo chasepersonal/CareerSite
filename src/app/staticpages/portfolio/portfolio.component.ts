@@ -10,7 +10,10 @@ import { butterService } from '../../_services/butterCMS.service';
 })
 export class PortfolioComponent implements OnInit {
 
-  portfolio: any;
+  /* Array needed to type match ButterCMS call */
+  portfolio: any = {
+    fields: []
+  };
 
   /* Necessary for pagination */
   p: number = 1;
@@ -23,11 +26,13 @@ export class PortfolioComponent implements OnInit {
   constructor(protected route: ActivatedRoute) {
   }
 
+  /* Call both portfolio and project methods as content is in different areas of CMS */
   ngOnInit() {
     this.getPortfolio();
     this.getProjects();
   }
 
+  /* Retrieve page content from ButterCMS */
   getPortfolio(): any {
     return butterService.page.retrieve('*', 'projects')
       .then((res) => {
@@ -35,6 +40,7 @@ export class PortfolioComponent implements OnInit {
     });
   }
 
+  /* Retrieve collection content from ButterCMS */
   getProjects(): any {
     return butterService.content.retrieve(['all_projects'])
       .then((res) => {

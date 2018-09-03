@@ -5,6 +5,7 @@ import { DebugElement } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { PostsComponent } from './posts.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 describe('PostsComponent', () => {
   let component: PostsComponent;
@@ -15,7 +16,8 @@ describe('PostsComponent', () => {
       declarations: [ PostsComponent ],
       imports: [
         HttpClientTestingModule,
-        RouterTestingModule
+        RouterTestingModule,
+        NgxPaginationModule
       ]
     })
     .compileComponents();

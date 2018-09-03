@@ -24,6 +24,10 @@ jobs:
       - run:
           name: install-dependencies
           command: npm install
+          
+      - run:
+          name: unit-tests
+          command: npm run test
 
       - save_cache:
           name: save-node-modules

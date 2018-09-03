@@ -9,13 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewoppComponent implements OnInit {
 
-  newopp: any;
+  /* Array needed to type match ButterCMS call */
+  newopp: any = {
+    fields: []
+  };
 
   constructor(protected route: ActivatedRoute) {}
   ngOnInit() {
     this.getNewOpp();
   }
 
+  /* Retrieve page content from ButterCMS */
   getNewOpp(): any {
     return butterService.page.retrieve('*', 'opportunities-services')
       .then((res) => {

@@ -9,7 +9,10 @@ import { butterService } from '../../_services/butterCMS.service';
 })
 export class AboutComponent implements OnInit {
 
-  about: any;
+  /* Array needed to type match ButterCMS call */
+  about: any = {
+    fields: []
+  };
 
   constructor(protected route: ActivatedRoute) {}
 
@@ -17,6 +20,7 @@ export class AboutComponent implements OnInit {
     this.getAbout();
   }
 
+  /* Retrieve page content from ButterCMS */
   getAbout(): any {
     return butterService.page.retrieve('static', 'about')
       .then((res) => {

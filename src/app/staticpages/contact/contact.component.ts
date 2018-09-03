@@ -9,12 +9,15 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ContactComponent implements OnInit {
 
-  contact: any;
+  /* Array needed to type match ButterCMS call */
+  contact: any = {
+    fields: []
+  };
 
   // Variables for social link url strings
-  linkedInUrl: string = 'https://www.linkedin.com/in/chase-weyer-4a5216a3/';
-  githubUrl: string = 'https://github.com/chasepersonal';
-  stackoverflowUrl: string = 'https://stackoverflow.com/users/8440440/chase';
+  linkedInUrl = 'https://www.linkedin.com/in/chase-weyer-4a5216a3/';
+  githubUrl = 'https://github.com/chasepersonal';
+  stackoverflowUrl = 'https://stackoverflow.com/users/8440440/chase';
 
 
   constructor(protected route: ActivatedRoute) { }
@@ -23,6 +26,7 @@ export class ContactComponent implements OnInit {
     this.getContact();
   }
 
+  /* Retrieve page content from ButterCMS */
   getContact(): any {
     return butterService.page.retrieve('contact', 'contact')
       .then((res) => {

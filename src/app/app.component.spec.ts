@@ -3,6 +3,9 @@ import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NavComponent } from './staticpages/nav/nav.component';
+import { ShareButtonsModule } from '@ngx-share/buttons';
+import { ShareButtonsOptions } from '@ngx-share/core';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -10,10 +13,12 @@ describe('AppComponent', () => {
           declarations: [
               AppComponent,
               ContactComponent,
+              NavComponent
           ],
           imports: [
               HttpClientTestingModule,
-              RouterTestingModule
+              RouterTestingModule,
+              ShareButtonsModule.forRoot(),
           ]
       }).compileComponents();
   }));

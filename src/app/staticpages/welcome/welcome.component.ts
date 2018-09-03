@@ -10,7 +10,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class WelcomeComponent implements OnInit {
 
-  welcome: any;
+  welcome: any = {
+    fields: []
+  };
 
   constructor(protected route: ActivatedRoute) { }
 
@@ -18,10 +20,10 @@ export class WelcomeComponent implements OnInit {
     this.getWelcome();
   }
 
-  getWelcome() {
+  getWelcome(): any {
     return butterService.page.retrieve('*', 'welcome')
       .then((res) => {
         this.welcome = res.data.data;
-      });
+    });
   }
 }

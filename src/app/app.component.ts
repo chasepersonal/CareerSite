@@ -12,9 +12,8 @@ import { Observable } from 'rxjs';
 
 export class AppComponent implements OnInit {
 
+  /* For accredation to CMS hosting site */
   butterCMSUrl: string = 'https://buttercms.com';
-
-  smallerWindow: boolean;
 
   constructor() {
 
