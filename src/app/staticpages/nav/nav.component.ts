@@ -22,22 +22,17 @@ export class NavComponent implements OnInit {
     this.menuVisible = !this.menuVisible;
   }
 
-  /* Check the width of the main browser window */
+  /* Listen to the window resize action in the browser */
+  /* Upon resize, Check the width of the main browser window*/
   /* If window is smaller than desktop, indicate that it is a smaller window */
   /* If not, indicate that it is a larger window */
-  checkWidth() {
+  @HostListener('window:resize')
+  onResize() {
     var width = window.innerWidth;
     if (width <= 992) {
       this.smallerWindow = true;
     } else {
       this.smallerWindow = false;
     }
-  }
-
-  /* Listen to the window resize action in the browser */
-  /* Upon resize, fire the checkWidth function */
-  @HostListener('window:resize')
-  onResize() {
-    this.checkWidth();
   }
 }

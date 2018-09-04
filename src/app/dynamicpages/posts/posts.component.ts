@@ -13,7 +13,7 @@ export class PostsComponent implements OnInit {
     fields: []
   };
 
-  posts: any;
+  posts: any[];
 
   /* Variable to indicate start point for pagination */
   p: number = 1;

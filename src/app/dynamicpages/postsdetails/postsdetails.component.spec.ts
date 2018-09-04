@@ -2,18 +2,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+
+import { PostsdetailsComponent } from './postsdetails.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterTestingModule } from 'node_modules/@angular/router/testing';
 
-import { NavComponent } from './nav.component';
-
-describe('NavComponent', () => {
-  let component: NavComponent;
-  let fixture: ComponentFixture<NavComponent>;
+describe('PostsdetailsComponent', () => {
+  let component: PostsdetailsComponent;
+  let fixture: ComponentFixture<PostsdetailsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NavComponent ],
+      declarations: [ PostsdetailsComponent ],
       imports: [
         HttpClientTestingModule,
         RouterTestingModule
@@ -23,18 +23,12 @@ describe('NavComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NavComponent);
+    fixture = TestBed.createComponent(PostsdetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should make menuToggle() change the menu state', () => {
-    expect(component.menuVisible).toBe(true);
-    component.menuToggle();
-    expect(component.menuVisible).toBe(false);
   });
 });

@@ -5,13 +5,14 @@
   </div>
 </div>
 
-<div *ngFor="let post of posts | paginate: { itemsPerPage: 3, currentPage: p }">
+<div *ngFor="let post of posts | paginate: { itemsPerPage: 5, currentPage: p }">
     <div class="card">
         <h4 class="card-title">{{post.title}}</h4>
         <div class="card-body">
           <h6 class="card-text">Published: {{post.published | date:'medium'}}</h6>
           <br>
-          <p [innerHTML]="post.body"></p>
+          <p [innerHTML]="post.summary"></p>
+          <a [routerLink]="['/posts', post.slug]">Get Full Post</a>
         </div>
     </div>
 </div>
