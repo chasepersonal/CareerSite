@@ -5,10 +5,13 @@ FROM node:10.15.3-alpine
 ADD . /app
 WORKDIR /app
 
-# Add depndencies
-COPY --chown user:user package.json /app/package.json
-RUN npm install
-RUN npm install -g @angular/cli@6.0.5
+# Add dependencies and add non-root user
+COPY package.json /app/package.json
+RUN npm install \
+    && adduser -D angular
+
+# Make main user non-root user
+USER angular
 
 # Add all necessary files to the main directory
 COPY . /app

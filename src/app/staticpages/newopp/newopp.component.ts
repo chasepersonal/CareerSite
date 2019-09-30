@@ -21,7 +21,7 @@ export class NewoppComponent implements OnInit {
 
   /* Retrieve page content from ButterCMS */
   getNewOpp(): any {
-    return butterService.page.retrieve('*', 'opportunities-services')
+    return butterService.page.retrieve('*', 'career-aspirations')
       .then((res) => {
         this.newopp = res.data.data;
       });
