@@ -7,7 +7,10 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:8-browsers
+      - image: registry.chaseweyer.com/devtools/nodejs:10.16.3-100
+        auth:
+          username: $HARBOR_USERNAME
+          password: $HARBOR_PASSWORD
 
     working_directory: ~/CareerSite
 
@@ -40,24 +43,45 @@ jobs:
           key: v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
               - dist
+  stage:
+    docker:
+      - image: registry.chaseweyer.com/devtools/nodejs:10.16.3-100
+        auth:
+          username: $HARBOR_USERNAME
+          password: $HARBOR_PASSWORD
+      steps:
+        - checkout
+        - setup_remote_docker
+        - run:
+          name: Push to Harbor Registry for vulnerability scan and backup
+          command: |
+            docker build -t registry.chaseweyer.com/webapp/careersite:${CIRCLE_SHA1} .
+            echo "$HARBOR_PASSWORD" | docker login --username=$HARBOR_USERNAME --password-stdin
+            docker push registry.chaseweyer.com/webapp/careersite:${CIRCLE_SHA1}
   deploy:
     docker:
-      - image: buildpack-deps:trusty
+      - image: registry.chaseweyer.com/devtools/heroku-cli:7.33.1-100
     steps:
       - checkout
       - run:
-          name: Deploy Master to Heroku
+          name: Deploy to Heroku Container Registry and Deploy as Application
           command: |
-            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+            docker build --rm=false -t registry.heroku.com/afternoon-eyrie-76088/web .
+            echo "$HEROKU_API_KEY" | docker login --username=$HEROKU_LOGIN --password-stdin
+            docker push registry.heroku.com/afternoon-eyrie-76088/web
 
 workflows:
   version: 2
-  build-deploy:
+  build-stage-deploy:
     jobs:
       - build
+      - stage:
+          requires:
+            - build
       - deploy:
           requires:
             - build
+            - stage
           filters:
             branches:
               only: master
