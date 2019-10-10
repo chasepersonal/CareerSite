@@ -52,7 +52,7 @@ jobs:
               login $HEROKU_EMAIL
               password $HEROKU_API_KEY
             EOT
-            heroku container:release web
+            heroku container:release web -a $HEROKU_APP_NAME
 workflows:
   version: 2
   build-stage-deploy:
