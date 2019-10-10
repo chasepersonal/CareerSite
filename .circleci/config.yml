@@ -31,7 +31,10 @@ jobs:
             docker push registry.chaseweyer.com/webapp/careersite:${CIRCLE_SHA1}
   deploy:
     docker:
-      - image: circleci/buildpack-deps:buster
+      - image: registry.chaseweyer.com/devtools/heroku-cli:7.33.3-1
+        auth:
+          username: $HARBOR_USERNAME
+          password: $HARBOR_PASSWORD
     steps:
       - checkout
       - setup_remote_docker
@@ -39,8 +42,17 @@ jobs:
           name: Deploy to Heroku Container Registry and Deploy as Application
           command: |
             docker build --rm=false -t registry.heroku.com/$HEROKU_APP_NAME/web .
-            echo "$HEROKU_API_KEY" | docker login --username=$HEROKU_LOGIN --password-stdin registry.heroku.com
+            echo "$HEROKU_API_KEY" | docker login --username=_ --password-stdin registry.heroku.com
             docker push registry.heroku.com/$HEROKU_APP_NAME/web
+            cat <<EOT >> ~/.netrc
+            machine api.heroku.com
+              login $HEROKU_EMAIL
+              password $HEROKU_API_KEY
+            machine git.heroku.com
+              login $HEROKU_EMAIL
+              password $HEROKU_API_KEY
+            EOT
+            heroku container:release web
 workflows:
   version: 2
   build-stage-deploy:
