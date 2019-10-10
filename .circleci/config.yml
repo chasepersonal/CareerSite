@@ -11,28 +11,12 @@ jobs:
     working_directory: ~/CareerSite
     steps:
       - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
       - run:
           name: install-dependencies
           command: npm install
       - run:
           name: unit-tests
           command: npm run test
-      - save_cache:
-          name: save-node-modules
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-      - save_cache:
-          name: save-dist
-          key: v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-              - dist
   stage:
     docker:
       - image: circleci/buildpack-deps:buster
