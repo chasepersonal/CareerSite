@@ -4,25 +4,19 @@ FROM node:10.16.3-alpine
 # Create Working Directory
 WORKDIR /app
 
-# Add sudo and new user with sudo priviledges
-RUN apk update \
-    && apk add sudo \
+# Install Python for npm gyp packages
+# Add local, non-root user to run app
+RUN apk add python python-dev py-pip \
     && addgroup -S local \
     && adduser -D -S local -G local \
-    && chown local:local /app \
-    && echo "local ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers \
-    && chmod 0440 /etc/sudoers
+    && chown local:local /app
 
 # Set default user to newly created user
 USER local
 
-# Add dependencies and add non-root user
-COPY package.json /app/package.json
-RUN  sudo npm install 
-
-# Add all necessary files to the main directory
-COPY . /app
-
-EXPOSE 8080
+# Copy all files over
+# For ng build --prod post install option
+COPY . /app/
+RUN  npm install 
 
 CMD [ "node", "server.js" ]

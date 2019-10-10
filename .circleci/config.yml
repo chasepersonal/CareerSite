@@ -7,10 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: registry.chaseweyer.com/devtools/nodejs:10.16.3-100
-        auth:
-          username: $HARBOR_USERNAME
-          password: $HARBOR_PASSWORD
+      - image: circleci/node:10.16.3-browsers
 
     working_directory: ~/CareerSite
 
@@ -45,10 +42,7 @@ jobs:
               - dist
   stage:
     docker:
-      - image: registry.chaseweyer.com/devtools/nodejs:10.16.3-100
-        auth:
-          username: $HARBOR_USERNAME
-          password: $HARBOR_PASSWORD
+      - image: circleci/buildpack-deps:buster
       steps:
         - checkout
         - setup_remote_docker
@@ -56,19 +50,20 @@ jobs:
           name: Push to Harbor Registry for vulnerability scan and backup
           command: |
             docker build -t registry.chaseweyer.com/webapp/careersite:${CIRCLE_SHA1} .
-            echo "$HARBOR_PASSWORD" | docker login --username=$HARBOR_USERNAME --password-stdin
+            echo "$HARBOR_PASSWORD" | docker login --username=$HARBOR_USERNAME --password-stdin registry.chaseweyer.com
             docker push registry.chaseweyer.com/webapp/careersite:${CIRCLE_SHA1}
   deploy:
     docker:
-      - image: registry.chaseweyer.com/devtools/heroku-cli:7.33.1-100
+      - image: circleci/buildpack-deps:buster
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: Deploy to Heroku Container Registry and Deploy as Application
           command: |
-            docker build --rm=false -t registry.heroku.com/afternoon-eyrie-76088/web .
-            echo "$HEROKU_API_KEY" | docker login --username=$HEROKU_LOGIN --password-stdin
-            docker push registry.heroku.com/afternoon-eyrie-76088/web
+            docker build --rm=false -t registry.heroku.com/$HEROKU_APP_NAME/web .
+            echo "$HEROKU_API_KEY" | docker login --username=$HEROKU_LOGIN --password-stdin registry.heroku.com
+            docker push registry.heroku.com/$HEROKU_APP_NAME/web
 
 workflows:
   version: 2
