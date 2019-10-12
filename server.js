@@ -12,3 +12,10 @@ app.listen(process.env.PORT || 8080);
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname + '/dist/CareerSite/index.html'));
 })
+
+// Add https redirect to requests
+app.use(function(request, response){
+  if(!request.secure){
+    response.redirect("https://" + request.headers.host + request.url);
+  }
+});
