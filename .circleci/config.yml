@@ -26,8 +26,8 @@ jobs:
       - run:
           name: Push to Harbor Registry for vulnerability scan and backup
           command: |
-            docker build -t reg.chaseweyer.com/webapp/careersite:${CIRCLE_SHA1} .
             echo "$HARBOR_PASSWORD" | docker login --username=$HARBOR_USERNAME --password-stdin reg.chaseweyer.com
+            docker build -t reg.chaseweyer.com/webapp/careersite:${CIRCLE_SHA1} .
             docker push reg.chaseweyer.com/webapp/careersite:${CIRCLE_SHA1}
   deploy:
     docker:
