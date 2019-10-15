@@ -26,12 +26,12 @@ jobs:
       - run:
           name: Push to Harbor Registry for vulnerability scan and backup
           command: |
-            docker build -t registry.chaseweyer.com/webapp/careersite:${CIRCLE_SHA1} .
-            echo "$HARBOR_PASSWORD" | docker login --username=$HARBOR_USERNAME --password-stdin registry.chaseweyer.com
-            docker push registry.chaseweyer.com/webapp/careersite:${CIRCLE_SHA1}
+            docker build -t reg.chaseweyer.com/webapp/careersite:${CIRCLE_SHA1} .
+            echo "$HARBOR_PASSWORD" | docker login --username=$HARBOR_USERNAME --password-stdin reg.chaseweyer.com
+            docker push reg.chaseweyer.com/webapp/careersite:${CIRCLE_SHA1}
   deploy:
     docker:
-      - image: registry.chaseweyer.com/devtools/heroku-cli:7.33.3-1
+      - image: reg.chaseweyer.com/devtools/heroku-cli:7.33.3-1
         auth:
           username: $HARBOR_USERNAME
           password: $HARBOR_PASSWORD
@@ -52,7 +52,7 @@ jobs:
               login $HEROKU_EMAIL
               password $HEROKU_API_KEY
             EOT
-            heroku container:release web -a $HEROKU_APP_NAME
+            heroku container:release -a $HEROKU_APP_NAME web
 workflows:
   version: 2
   build-stage-deploy:
