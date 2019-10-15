@@ -1,5 +1,5 @@
 # Base image
-FROM node:10.16.3-alpine
+FROM reg.chaseweyer.com/base/nodejs:10.16.3-2
 
 # Create Working Directory
 WORKDIR /app
@@ -19,4 +19,4 @@ USER local
 COPY . /app/
 RUN  npm install 
 
-CMD [ "node", "server.js" ]
+CMD [ "npm", "start" ]
