@@ -1,5 +1,5 @@
 # Base image
-FROM reg.chaseweyer.com/base/nodejs:10.16.3-2
+FROM node:14.16.1-alpine3.13
 
 # Create Working Directory
 WORKDIR /app

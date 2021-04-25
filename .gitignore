@@ -37,3 +37,7 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# For container work with VS Code
+# Not needed for code functionality
+.devcontainer

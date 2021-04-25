@@ -19,28 +19,29 @@ jobs:
           command: npm run test
   stage:
     docker:
-      - image: circleci/buildpack-deps:buster
+      - image: cimg/base:2020.01
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: Push to Harbor Registry for vulnerability scan and backup
           command: |
-            echo "$HARBOR_PASSWORD" | docker login --username=$HARBOR_USERNAME --password-stdin reg.chaseweyer.com
-            docker build -t reg.chaseweyer.com/webapp/careersite:${CIRCLE_SHA1} .
-            docker push reg.chaseweyer.com/webapp/careersite:${CIRCLE_SHA1}
+            echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_USERNAME --password-stdin
+            docker build -t chaseweyer/careersite:${CIRCLE_SHA1} .
+            docker push chaseweyer/careersite:${CIRCLE_SHA1}
   deploy:
     docker:
-      - image: reg.chaseweyer.com/devtools/heroku-cli:7.33.3-1
-        auth:
-          username: $HARBOR_USERNAME
-          password: $HARBOR_PASSWORD
+      - image: cimg/base:2020.01
+        # auth:
+        #   username: $HARBOR_USERNAME
+        #   password: $HARBOR_PASSWORD
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: Deploy to Heroku Container Registry and Deploy as Application
           command: |
+            curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
             docker build --rm=false -t registry.heroku.com/$HEROKU_APP_NAME/web .
             echo "$HEROKU_API_KEY" | docker login --username=_ --password-stdin registry.heroku.com
             docker push registry.heroku.com/$HEROKU_APP_NAME/web
