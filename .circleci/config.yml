@@ -21,7 +21,7 @@ jobs:
       #     command: npm run test
   stage:
     docker:
-      - image: cimg/base:2020.01
+      - image: circleci/node:10.16.3-browsers
     steps:
       - checkout
       - run:
@@ -32,7 +32,7 @@ jobs:
           to: s3://${DEV_BUCKET}
   deploy:
     docker:
-      - image: cimg/base:2020.01
+      - image: circleci/node:10.16.3-browsers
     steps:
       - checkout
       - run:
