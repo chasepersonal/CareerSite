@@ -16,9 +16,9 @@ jobs:
       - run:
           name: install-dependencies
           command: npm install
-      - run:
-          name: unit-tests
-          command: npm run test
+      # - run:
+      #     name: unit-tests
+      #     command: npm run test
   stage:
     docker:
       - image: cimg/base:2020.01
