@@ -4,8 +4,6 @@ import { AppComponent } from './app.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NavComponent } from './staticpages/nav/nav.component';
-import { ShareButtonsModule } from '@ngx-share/buttons';
-import { ShareButtonsOptions } from '@ngx-share/core';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -18,7 +16,6 @@ describe('AppComponent', () => {
           imports: [
               HttpClientTestingModule,
               RouterTestingModule,
-              ShareButtonsModule.forRoot(),
           ]
       }).compileComponents();
   }));
