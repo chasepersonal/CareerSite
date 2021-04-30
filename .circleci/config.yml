@@ -25,10 +25,9 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Build Angular Website
+          name: Build Angular Website and Deploy it to Dev
           command: npm install
       - aws-s3/sync:
-          name: Deploy Angular Site to s3 Bucket
           from: dist/CareerSite
           to: s3://${DEV_BUCKET}
   deploy:
@@ -37,10 +36,9 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Build Angular Website
+          name: Build Angular Website and deploy it to Prod
           command: npm install
       - aws-s3/sync:
-          name: Deploy Angular Site to s3 Bucket
           from: dist/CareerSite
           to: s3://${PROD_BUCKET}
 workflows:
