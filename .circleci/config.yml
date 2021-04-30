@@ -2,7 +2,9 @@
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
-version: 2
+version: 2.1
+orbs:
+  aws-s3: circleci/aws-s3@2.0.0
 jobs:
   build:
     docker:
@@ -22,38 +24,25 @@ jobs:
       - image: cimg/base:2020.01
     steps:
       - checkout
-      - setup_remote_docker
       - run:
-          name: Push to Harbor Registry for vulnerability scan and backup
-          command: |
-            echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_USERNAME --password-stdin
-            docker build -t chaseweyer/careersite:${CIRCLE_SHA1} .
-            docker push chaseweyer/careersite:${CIRCLE_SHA1}
+          name: Build Angular Website
+          command: npm install
+      - aws-s3/sync:
+          name: Deploy Angular Site to s3 Bucket
+          from: dist/CareerSite
+          to: s3://${DEV_BUCKET}
   deploy:
     docker:
       - image: cimg/base:2020.01
-        # auth:
-        #   username: $HARBOR_USERNAME
-        #   password: $HARBOR_PASSWORD
     steps:
       - checkout
-      - setup_remote_docker
       - run:
-          name: Deploy to Heroku Container Registry and Deploy as Application
-          command: |
-            curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
-            docker build --rm=false -t registry.heroku.com/$HEROKU_APP_NAME/web .
-            echo "$HEROKU_API_KEY" | docker login --username=_ --password-stdin registry.heroku.com
-            docker push registry.heroku.com/$HEROKU_APP_NAME/web
-            cat <<EOT >> ~/.netrc
-            machine api.heroku.com
-              login $HEROKU_EMAIL
-              password $HEROKU_API_KEY
-            machine git.heroku.com
-              login $HEROKU_EMAIL
-              password $HEROKU_API_KEY
-            EOT
-            heroku container:release -a $HEROKU_APP_NAME web
+          name: Build Angular Website
+          command: npm install
+      - aws-s3/sync:
+          name: Deploy Angular Site to s3 Bucket
+          from: dist/CareerSite
+          to: s3://${PROD_BUCKET}
 workflows:
   version: 2
   build-stage-deploy:
@@ -63,6 +52,7 @@ workflows:
           requires:
             - build
       - deploy:
+          type: approval
           requires:
             - build
             - stage

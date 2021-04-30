@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { butterService } from '../../_services/butterCMS.service';
+import { butterService } from '../../services/butterCMS.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

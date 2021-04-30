@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, take } from 'rxjs/operators';
-import { butterService } from '../../_services/butterCMS.service';
+import { butterService } from '../../services/butterCMS.service';
 
 @Component({
   selector: 'app-postsdetails',

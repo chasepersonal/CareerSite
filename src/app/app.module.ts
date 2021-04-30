@@ -11,17 +11,10 @@ import { AppComponent } from './app.component';
 import { RouterModule} from '@angular/router';
 import { appRoutes } from './routes';
 import { PostsComponent } from './dynamicpages/posts/posts.component';
-import { ShareButtonsModule } from '@ngx-share/buttons';
-import { ShareButtonsOptions } from '@ngx-share/core';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NavComponent } from './staticpages/nav/nav.component';
 import { NgxPageScrollModule } from 'ngx-page-scroll';
 import { PostsdetailsComponent } from './dynamicpages/postsdetails/postsdetails.component';
-
-const customOptions: ShareButtonsOptions = {
-  include: ['facebook','twitter','google','linkedin','pinterest','reddit','tumblr','whatsapp','messenger','telegram','sms'],
-  exclude: []
-}
 
 @NgModule({
   declarations: [
@@ -40,7 +33,6 @@ const customOptions: ShareButtonsOptions = {
     BrowserModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
-    ShareButtonsModule.forRoot({options: customOptions}),
     HttpClientJsonpModule,
     NgxPaginationModule,
     NgxPageScrollModule

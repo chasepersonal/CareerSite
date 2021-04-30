@@ -1,4 +1,4 @@
-import { butterService } from './../../_services/butterCMS.service';
+import { butterService } from '../../services/butterCMS.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
