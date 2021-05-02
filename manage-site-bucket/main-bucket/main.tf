@@ -9,21 +9,22 @@ terraform {
   backend "s3" {
     # Replace this with your bucket name!
     bucket         = "careersite-state"
-    key            = "${var.bucket_name}/terraform.tfstate"
-    region         = "${var.aws_region}"
+    key            = "test.chaseweyer.com/terraform.tfstate"
+    region         = "us-east-1"
   }
 }
 
 # Configure the AWS Provider
-provider "aws" {
-  region 	 = "${var.aws_region}"
-  access_key = "${var.aws_access_key}"
-  secret_key = "${var.aws_secret_key}"
-}
+provider "aws" {}
+
 resource "aws_s3_bucket" "bucket" {
 	bucket = "${var.bucket_name}"
 	acl    = "public-read"
 	policy = file("policy.json")
+
+  # Force the destruction of a bucket
+	# Will not destroy unless this is present
+	force_destroy = true
 
 	# Will enable static website settings
 	website {

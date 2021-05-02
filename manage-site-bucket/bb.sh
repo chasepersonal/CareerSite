@@ -73,15 +73,20 @@ function create-main-bucket {
     cd ${main_path}/main-bucket
     # Edit the policy.json to have the bucket name
     sed -i -e 's/<insert-bucket-name-here>/${bucket}/g' policy.json
+    # Edit the main.tf to have the bucket name for the backend
+    sed -i -e 's/<insert-bucket-name-here>/${bucket}/g' main.tf
     # Export bucket name as a terraform environment variable
     export TF_VAR_bucket_name="${bucket}"
     terraform init
-    terraform apply --auto-approve
+    terrform plan -out
+    terraform apply -auto-approve
 }
 
 function destroy-main-bucket {
-    cd main-bucket
-    terraform destroy --auto-approve
+    cd ${main_path}/main-bucket
+    terraform init
+    terraform plan -out
+    terraform destroy -auto-approve
 }
 
 # Run through the function steps
