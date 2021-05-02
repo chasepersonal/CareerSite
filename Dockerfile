@@ -14,8 +14,7 @@ RUN apt-get update \
 # Set default user to newly created user
 USER local
 
-# Copy all files over
-# For ng build --prod post install option
+# Copy over all the necessary files
 COPY . /app/
 RUN  npm install 
 

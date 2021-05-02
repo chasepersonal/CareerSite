@@ -41,3 +41,6 @@ Thumbs.db
 # For container work with VS Code
 # Not needed for code functionality
 .devcontainer
+
+# This isn't needed as it will be generated with an npm install
+package-lock.json
