@@ -9,6 +9,12 @@ terraform {
 
 resource "aws_s3_bucket" "terraform_state" {
   bucket = "careersite-state"
+
+  # Add this so subsequent calls won't destroy the resource
+  
+  lifecycle {
+    prevent_destroy = true
+  }
   
   # Enable versioning to keep track of state
   versioning {

@@ -49,12 +49,17 @@ function env-check {
 function bucket-actions {
     # Check if bucket exists before taking any action
     if [[ $(aws s3 ls ${bucket}) != "" ]]; then
-        echo "Bucket exists! Exiting script"
-        exit 1
+        echo "Bucket exists! Nothing needs to be done. Exiting script"
+        exit 0
     else
         echo "Bucket does not exist. Will take appropriate action"
         if [[ ${action} == "create" ]]; then
-            create-main-bucket
+            if [[ $(aws s3 ls careersite-state) != "" ]]; then
+                create-main-bucket
+            else
+                create-state-bucket
+                create-main-bucket-with-state
+            fi
         else
             destroy-main-bucket
         fi
@@ -69,7 +74,8 @@ function create-state-bucket {
 }
 
 # Create main website bucket using terraform
-function create-main-bucket {
+# This will also build the state if it doesn't exist
+function create-main-bucket-with-state {
     cd ${main_path}/main-bucket
     # Edit the policy.json to have the bucket name
     sed -i -e 's/<insert-bucket-name-here>/${bucket}/g' policy.json
@@ -77,13 +83,23 @@ function create-main-bucket {
     sed -i -e 's/<insert-bucket-name-here>/${bucket}/g' main.tf
     # Export bucket name as a terraform environment variable
     export TF_VAR_bucket_name="${bucket}"
-    terraform init
+    terraform init -force-copy
     terrform plan -out
     terraform apply -auto-approve
 }
 
+# Create the main bucket
+function create-main-bucket {
+    cd ${main_path}/main-bucket
+    export TF_VAR_bucket_name="${bucket}"
+    terrafrom init
+    terrafrom plan -out
+    terrafrom apply -auto-approve
+}
+
 function destroy-main-bucket {
     cd ${main_path}/main-bucket
+    export TF_VAR_bucket_name="${bucket}"
     terraform init
     terraform plan -out
     terraform destroy -auto-approve
