@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.0"
+    }
+  }
+}
+
 resource "aws_s3_bucket" "terraform_state" {
   bucket = "careersite-state"
   

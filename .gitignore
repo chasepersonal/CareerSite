@@ -44,3 +44,8 @@ Thumbs.db
 
 # This isn't needed as it will be generated with an npm install
 package-lock.json
+
+# Don't save terraform init
+.terraform
+/manage-bucket-site/main-bucket/.terraform
+/manage-bucket-site/state-bucket/.terraform
