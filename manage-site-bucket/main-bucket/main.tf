@@ -9,7 +9,7 @@ terraform {
   backend "s3" {
     # Replace this with your bucket name!
     bucket         = "careersite-state"
-    key            = "test.chaseweyer.com/terraform.tfstate"
+    key            = "<insert-bucket-name-here>/terraform.tfstate"
     region         = "us-east-1"
   }
 }
