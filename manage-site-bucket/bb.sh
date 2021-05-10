@@ -133,11 +133,11 @@ function create_main_bucket_with_state {
 function create_main_bucket {
     cd ${main_path}/main-bucket
     prep_configurations
-    terrafrom init
+    terraform init
     status_check
-    terrafrom plan
+    terraform plan
     status_check
-    terrafrom apply -auto-approve
+    terraform apply -auto-approve
     status_check
 }
 
