@@ -70,32 +70,34 @@ function env_check {
 
 # Perform the necessary actions on the bucket
 function bucket_actions {
-    # Check if bucket exists before taking any action
-    # Get return code of the aws bucket ls command
-    aws s3 ls ${bucket}
-    bucket_status=$?
-    if [ $bucket_status -eq 0 ]; then
-        echo ""
-        echo "Bucket exists! Exiting script"
-        exit 0
-    # AWS CLI returns a 255 error code if bucket does not exist
-    elif [ $bucket_status -eq 255 ]; then
-        echo "Bucket does not exist. Will take appropriate action"
-        if [[ ${action} == "create" ]]; then
-            # Get return code for state
-            aws s3 ls careersite-state
-            state_bucket_status=$?
-            # If state bucket exists, just create the main bucket
-            if [ $state_bucket_status -eq 0 ]; then
-                create_main_bucket
-            # If state file does not exist, create both the state and main bucket
-            elif [ $state_bucket_status -eq 255 ]; then
-                create_state_bucket
-                create_main_bucket_with_state
-            fi
-        elif [[ ${action} == "destroy" ]]; then
-            destroy_main_bucket
+    # Perform different actions depending on create or destroy
+    if [[ ${action} == "create" ]]; then
+        # Get return code for state
+        aws s3 ls careersite-state
+        state_bucket_status=$?
+        # If state bucket exists, just create the main bucket
+        if [ $state_bucket_status -eq 0 ]; then
+            create_main_bucket
+        # If state file does not exist, create both the state and main bucket
+        elif [ $state_bucket_status -eq 255 ]; then
+            create_state_bucket
+            create_main_bucket_with_state
+            i
+    elif [[ ${action} == "destroy" ]]; then
+        # Check if there is a state bucket
+        aws s3 ls careersite-state
+        state_bucket_status=$?
+
+        # If no state bucket exists, exit with an error
+        if [ $state_bucket_status -ne 0 ]; then
+            echo ""
+            echo "State bucket does not exist."
+            echo "Will be unable to execute the destroy without a state file."
+            echo "Please run script with 'create' so the state will get created"
+            exit 1
         fi
+
+        destroy_main_bucket
     fi
 }
 
@@ -103,8 +105,12 @@ function bucket_actions {
 function create_state_bucket {
     cd ${main_path}/state-bucket
     terraform init
-    terraform plan -out
+    status_check
+    terraform plan
+    status_check
     terraform apply -auto-approve
+    status_check
+    state_check
     mv terraform.tfstate ${main_path}/main-bucket/terraform.tfstate
 }
 
@@ -112,12 +118,9 @@ function create_state_bucket {
 # This will also build the state if it doesn't exist
 function create_main_bucket_with_state {
     cd ${main_path}/main-bucket
-    # Edit the policy.json to have the bucket name
-    sed -i -e "s/<insert-bucket-name-here>/$bucket/g" policy.json
-    # Edit the main.tf to have the bucket name for the backend
-    sed -i -e "s/<insert-bucket-name-here>/$bucket/g" main.tf
-    # Export bucket name as a terraform environment variable
-    export TF_VAR_bucket_name="$bucket"
+    prep_configurations
+    # Check that the state was moved to the folder before continuing
+    state_check
     terraform init -force-copy
     status_check
     terraform plan
@@ -129,12 +132,7 @@ function create_main_bucket_with_state {
 # Create the main bucket
 function create_main_bucket {
     cd ${main_path}/main-bucket
-    # Edit the policy.json to have the bucket name
-    sed -i -e 's/<insert-bucket-name-here>/${bucket}/g' policy.json
-    # Edit the main.tf to have the bucket name for the backend
-    sed -i -e 's/<insert-bucket-name-here>/${bucket}/g' main.tf
-    # Export bucket name as a terraform environment variable
-    export TF_VAR_bucket_name="${bucket}"
+    prep_configurations
     terrafrom init
     status_check
     terrafrom plan
@@ -145,12 +143,12 @@ function create_main_bucket {
 
 function destroy_main_bucket {
     cd ${main_path}/main-bucket
-    export TF_VAR_bucket_name="${bucket}"
+    prep_configurations
     terraform init
     status_check
-    terraform plan
+    terraform plan -destroy
     status_check
-    terraform destroy -auto-approve
+    terraform apply -destroy -auto-approve
     status_check
 }
 
@@ -171,10 +169,37 @@ function final_message {
 # If not 0, will not continue and exit
 function status_check {
     if [ $? -ne  0 ]; then
+        echo ""
         echo "An Error occured when executing the previous action."
         echo "Exiting script."
         exit 1
     fi
+}
+
+# Check that a state file exists
+# Exit program if it doesn't
+function state_check {
+    if [ -f "terraform.tfstate" ]; then
+        echo ""
+        echo "Terraform state file exists."
+        echo "Continuing with the script"
+    else
+        echo ""
+        echo "ERROR: Terraform state file does not exist"
+        echo "This file should be available before continuing"
+        echo "Exiting Script"
+        exit 1
+    fi
+}
+
+# Prep for creation/destruction of terraform
+function prep_configurations {
+    # Edit the policy.json to have the bucket name
+    sed -i -e "s/<insert-bucket-name-here>/$bucket/g" policy.json
+    # Edit the main.tf to have the bucket name for the backend
+    sed -i -e "s/<insert-bucket-name-here>/$bucket/g" main.tf
+    # Export bucket name as a terraform environment variable
+    export TF_VAR_bucket_name="${bucket}"
 }
 
 # Run through the function steps
