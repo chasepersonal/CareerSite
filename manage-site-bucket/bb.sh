@@ -86,10 +86,10 @@ function bucket_actions {
             aws s3 ls careersite-state
             state_bucket_status=$?
             # If state bucket exists, just create the main bucket
-            if [ ${state_bucket_status} -eq 0 ]; then
+            if [ $state_bucket_status -eq 0 ]; then
                 create_main_bucket
             # If state file does not exist, create both the state and main bucket
-            elif [ ${state_bucket_status} -eq 255 ]; then
+            elif [ $state_bucket_status -eq 255 ]; then
                 create_state_bucket
                 create_main_bucket_with_state
             fi
@@ -113,14 +113,17 @@ function create_state_bucket {
 function create_main_bucket_with_state {
     cd ${main_path}/main-bucket
     # Edit the policy.json to have the bucket name
-    sed -i -e 's/<insert-bucket-name-here>/${bucket}/g' policy.json
+    sed -i -e "s/<insert-bucket-name-here>/$bucket/g" policy.json
     # Edit the main.tf to have the bucket name for the backend
-    sed -i -e 's/<insert-bucket-name-here>/${bucket}/g' main.tf
+    sed -i -e "s/<insert-bucket-name-here>/$bucket/g" main.tf
     # Export bucket name as a terraform environment variable
-    export TF_VAR_bucket_name="${bucket}"
+    export TF_VAR_bucket_name="$bucket"
     terraform init -force-copy
-    terraform plan -out
+    status_check
+    terraform plan
+    status_check
     terraform apply -auto-approve
+    status_check
 }
 
 # Create the main bucket
@@ -133,29 +136,45 @@ function create_main_bucket {
     # Export bucket name as a terraform environment variable
     export TF_VAR_bucket_name="${bucket}"
     terrafrom init
-    terrafrom plan -out
+    status_check
+    terrafrom plan
+    status_check
     terrafrom apply -auto-approve
+    status_check
 }
 
 function destroy_main_bucket {
     cd ${main_path}/main-bucket
     export TF_VAR_bucket_name="${bucket}"
     terraform init
-    terraform plan -out
+    status_check
+    terraform plan
+    status_check
     terraform destroy -auto-approve
+    status_check
 }
 
 function final_message {
     if [[ ${action} == "create" ]]; then
         echo ""
         echo "The following bucket was created: "
-        echo "${bucket}"
+        echo "$bucket"
     elif [[ ${action} == "destroy" ]]; then
         echo ""
         echo "The following bucket was destroyed: "
-        echo "${bucket}"
+        echo "$bucket"
     fi
     exit 0
+}
+
+# This function will check return code of previous action
+# If not 0, will not continue and exit
+function status_check {
+    if [ $? -ne  0 ]; then
+        echo "An Error occured when executing the previous action."
+        echo "Exiting script."
+        exit 1
+    fi
 }
 
 # Run through the function steps
