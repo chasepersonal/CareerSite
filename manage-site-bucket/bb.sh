@@ -103,6 +103,7 @@ function bucket_actions {
 function create_state_bucket {
     cd ${main_path}/state-bucket
     terraform init
+    terraform plan -out
     terraform apply -auto-approve
     mv terraform.tfstate ${main_path}/main-bucket/terraform.tfstate
 }
@@ -144,9 +145,25 @@ function destroy_main_bucket {
     terraform destroy -auto-approve
 }
 
+function final_message {
+    if [[ ${action} == "create" ]]; then
+        echo ""
+        echo "The following bucket was created: "
+        echo "${bucket}"
+    elif [[ ${action} == "destroy" ]]; then
+        echo ""
+        echo "The following bucket was destroyed: "
+        echo "${bucket}"
+    fi
+    exit 0
+}
+
 # Run through the function steps
 env_check
 bucket_actions
 
 # Return to the main directory
 cd ..
+
+# Give completion message and exit cleanly
+final_message
