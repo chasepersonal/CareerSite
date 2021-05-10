@@ -38,17 +38,17 @@ function env_check {
     # Generate error if aws cli and/or terraform are not installed
     # This script will use aws cli to get bucket status
     # Terraform will be used to create the buckets
-    if [[ $(which aws) == "" ]] && [[ $(which terraform) == ""  ]]; then
+    if [ $(which aws) == "" ] && [ $(which terraform) == ""  ]; then
         echo ""
         echo "Terraform and aws cli is not installed"
         echo "Please install terraform aws cli before running again"
         exit 1
-    elif [[ $(which terraform) == "" ]]; then
+    elif [ $(which terraform) == "" ]; then
         echo ""
         echo "Terraform is not installed"
         echo "Please install terraform before running again"
         exit 1
-    elif [[ $(which aws) == "" ]]; then
+    elif [ $(which aws) == "" ]; then
         echo ""
         echo "aws cli is not installed"
         echo "Please install aws cli before running again"
@@ -73,23 +73,23 @@ function bucket_actions {
     # Check if bucket exists before taking any action
     # Get return code of the aws bucket ls command
     aws s3 ls ${bucket}
-    s3_main_return_code=$(echo $?)
-    if [[ ${s3_main_return_code} -eq 0 ]]; then
+    bucket_status=$?
+    if [ $bucket_status -eq 0 ]; then
         echo ""
         echo "Bucket exists! Exiting script"
         exit 0
     # AWS CLI returns a 255 error code if bucket does not exist
-    elif [[ ${s3_return_code} -eq 255 ]]; then
+    elif [ $bucket_status -eq 255 ]; then
         echo "Bucket does not exist. Will take appropriate action"
         if [[ ${action} == "create" ]]; then
             # Get return code for state
             aws s3 ls careersite-state
-            s3_state_return_code=$(echo $?)
+            state_bucket_status=$?
             # If state bucket exists, just create the main bucket
-            if [[ ${s3_state_return_code} -eq 0 ]]; then
+            if [ ${state_bucket_status} -eq 0 ]; then
                 create_main_bucket
             # If state file does not exist, create both the state and main bucket
-            elif [[ ${s3_state_return_code} -eq 255 ]]; then
+            elif [ ${state_bucket_status} -eq 255 ]; then
                 create_state_bucket
                 create_main_bucket_with_state
             fi
