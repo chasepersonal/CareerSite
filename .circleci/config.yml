@@ -9,7 +9,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:10.16.3-browsers
+      - image: circleci/cimg/node:14.16.1-browsers
     working_directory: ~/CareerSite
     steps:
       - checkout
@@ -21,7 +21,7 @@ jobs:
       #     command: npm run test
   deploy:
     docker:
-      - image: circleci/node:10.16.3-browsers
+      - image: circleci/cimg/node:14.16.1-browsers
     steps:
       - checkout
       - run:
