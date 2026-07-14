@@ -35,14 +35,10 @@ workflows:
   build-stage-deploy:
     jobs:
       - build
-      - stage:
-          requires:
-            - build
       - deploy:
           type: approval
           requires:
             - build
-            - stage
           filters:
             branches:
               only: master
